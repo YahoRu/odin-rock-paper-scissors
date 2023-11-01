@@ -9,6 +9,8 @@ const winCondition = 3;
 const userChooseNothing = "You choose nothing, auto lose!";
 
 let playerSelection = 'None';
+let playersScore = 0;
+let computersScore = 0;
 
 let announcerText = document.querySelector(".announcer");
 let elements = document.querySelectorAll("button.element");
@@ -76,8 +78,11 @@ function rockPaperScissorsRound(playerSelection, computerSelection) {
 async function game() {
   blockStartButton();
 
-  let playersScore = 0;
-  let computersScore = 0;
+  playersScore = 0;
+  computersScore = 0;
+  document.querySelector(".player-score").textContent = playersScore;
+  document.querySelector(".computer-score").textContent = computersScore;
+
 
   while (playersScore !== winCondition && computersScore !== winCondition) {
     announcerText.textContent = "One!";
