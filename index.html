@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <section class="main-section">
 
-</body>
-<script src="/scripts.js"></script>
+      <div class="wrapper">
+
+        <div class="score-board">
+          <div class="players">Player</div>
+          <div class="score">
+            <p class="player-score">0</p>
+            <p>:</p>
+            <p class="computer-score">0</p>
+          </div>
+          <div class="players">Computer</div>
+        </div>
+
+        <button class="button element" value="ROCK">Rock</button>
+        <button class="button element" value="PAPER">Paper</button>
+        <button class="button element" value="SCISSORS">Scissors</button>
+        
+      </div>
+
+      <div class="announcer">Welcome to the great battle!</div>
+
+      <button class="button start">Start game</button>
+
+      <div class="note">
+        <p>
+          You have to make a decision after the third second, but don't think
+          too long or you'll get techlose!
+        </p>
+      </div>
+    </section>
+
+    <script src="/scripts.js"></script>
+  </body>
 </html>

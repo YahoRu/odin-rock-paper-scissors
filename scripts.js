@@ -1,73 +1,121 @@
-const ROCK = {
-    id: 1,
-    elementName: 'rock'
-};
-const PAPER = {
-    id: 2,
-    elementName: 'paper'
-};
-const SCISSORS = {
-    id: 3,
-    elementName: 'scissors'
+const ROCK = "ROCK";
+const PAPER = "PAPER";
+const SCISSORS = "SCISSORS";
+
+const draw = "Draw!";
+const youWin = "You win!";
+const youLose = "You lose!";
+const winCondition = 3;
+const userChooseNothing = "You choose nothing, auto lose!";
+
+let playerSelection = 'None';
+
+let announcerText = document.querySelector(".announcer");
+let elements = document.querySelectorAll("button.element");
+let startButton = document.querySelector("button.start");
+
+elements.forEach((element) => {
+  element.addEventListener("click", getPlayersChoice);
+});
+
+
+startButton.addEventListener("click", game);
+
+function blockStartButton() {
+  startButton.textContent = "In game";
+  startButton.disabled = true;
 }
 
-let playerSelection = ROCK;
+function unblockStartButton() {
+  startButton.textContent = "Start game";
+  startButton.disabled = false;
+}
+
+function getPlayersChoice(e) {
+  playerSelection = e.target.value;
+}
 
 function getComputerChoice() {
-    let randomNumber = Math.floor(Math.random() * (3)) + 1;
-    switch (randomNumber) {
-        case 1: return ROCK;
-        case 2: return PAPER;
-        case 3: return SCISSORS;
-    } 
-}
-const draw = 'Draw!';
-const youWin = 'You win!';
-const youLose = 'You lose!';
+  let randomNumber = Math.floor(Math.random() * 3) + 1;
 
-function rockPaperScissorsRound(playerSelection, computerSelection){ 
-    let playerSelectionToLowerCase = playerSelection.toLowerCase();
- if(playerSelectionToLowerCase === ROCK.elementName && computerSelection === ROCK) return draw;
- else if(playerSelectionToLowerCase === ROCK.elementName && computerSelection === PAPER) return youLose;
- else if(playerSelectionToLowerCase === ROCK.elementName && computerSelection === SCISSORS) return youWin;
- else if(playerSelectionToLowerCase === PAPER.elementName && computerSelection === ROCK) return youWin;
- else if(playerSelectionToLowerCase === PAPER.elementName && computerSelection === PAPER) return draw;
- else if(playerSelectionToLowerCase === PAPER.elementName && computerSelection === SCISSORS) return youLose;
- else if(playerSelectionToLowerCase === SCISSORS.elementName && computerSelection === ROCK) return youLose;
- else if(playerSelectionToLowerCase === SCISSORS.elementName && computerSelection === PAPER) return youWin;
- else if(playerSelectionToLowerCase === SCISSORS.elementName && computerSelection === SCISSORS) return draw;
+  switch (randomNumber) {
+    case 1:
+      return ROCK;
+    case 2:
+      return PAPER;
+    case 3:
+      return SCISSORS;
+  }
 }
 
+function rockPaperScissorsRound(playerSelection, computerSelection) {
+  if (playerSelection === 'None') return userChooseNothing;
 
+  else if (playerSelection === ROCK && computerSelection === ROCK) 
+    return draw;
+  else if (playerSelection === ROCK && computerSelection === PAPER)
+    return youLose;
+  else if (playerSelection === ROCK && computerSelection === SCISSORS)
+    return youWin;
+
+  else if (playerSelection === PAPER && computerSelection === ROCK)
+    return youWin;
+  else if (playerSelection === PAPER && computerSelection === PAPER)
+    return draw;
+  else if (playerSelection === PAPER && computerSelection === SCISSORS)
+    return youLose;
+
+  else if (playerSelection === SCISSORS && computerSelection === ROCK)
+    return youLose;
+  else if (playerSelection === SCISSORS && computerSelection === PAPER)
+    return youWin;
+  else if (playerSelection === SCISSORS && computerSelection === SCISSORS)
+    return draw;
+}
 
 async function game() {
-    let playersScore = 0;
-    let computersScore = 0;
+  blockStartButton();
 
-    while(playersScore !== 3 && computersScore !== 3){
-        console.log('One!');
-        await new Promise(r => setTimeout(r, 1000));
-        console.log('Two!');
-        await new Promise(r => setTimeout(r, 1000));
-        console.log('Three!');
-        await new Promise(r => setTimeout(r, 1000));
-        var yourElement = prompt("Think fast!");
-        let computerSelection = getComputerChoice();
-        let result = rockPaperScissorsRound(yourElement, computerSelection);
+  let playersScore = 0;
+  let computersScore = 0;
 
-        if(result === youWin) playersScore += 1;
-        else if(result === youLose) computersScore += 1;
+  while (playersScore !== winCondition && computersScore !== winCondition) {
+    announcerText.textContent = "One!";
+    await new Promise((r) => setTimeout(r, 1000));
+    announcerText.textContent = "Two!";
+    await new Promise((r) => setTimeout(r, 1000));
+    announcerText.textContent = "Three!";
+    playerSelection = 'None';
+    await new Promise((r) => setTimeout(r, 1000));
 
-        console.log(`${result} Your ${yourElement} vs Computer\`s ${computerSelection.elementName}.`);
-        await new Promise(r => setTimeout(r, 500));
-        console.log(`Score: ${playersScore} - ${computersScore}.`)
+    let computerSelection = getComputerChoice();
+    let result = rockPaperScissorsRound(playerSelection, computerSelection);
 
-        await new Promise(r => setTimeout(r, 3000));
+    if (result === userChooseNothing) {
+      result = userChooseNothing;
+      computersScore += 1;
+      document.querySelector(".computer-score").textContent = computersScore;
+    } 
+    else if (result === youWin) {
+      playersScore += 1;
+      document.querySelector(".player-score").textContent = playersScore;
+    } 
+    else if (result === youLose) {
+      computersScore += 1;
+      document.querySelector(".computer-score").textContent = computersScore;
     }
 
-    if(playersScore > computersScore) console.log(`You win Best Of 3! Score: ${playersScore} - ${computersScore}.`)
-    else console.log(`You lose Best Of 3! Score: ${playersScore} - ${computersScore}.`)
+    announcerText.textContent = `${result} Your ${playerSelection} vs Computer\`s ${computerSelection}.`;
+
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+
+  if (playersScore > computersScore) {
+    announcerText.textContent = `You win Best Of Three! Score: ${playersScore} - ${computersScore}.`;
+  }
+  else {
+    announcerText.textContent = `You lose Best Of Three! Score: ${playersScore} - ${computersScore}.`;
+  }
+
+  unblockStartButton();
 }
-
-game();
-
