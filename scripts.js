@@ -97,7 +97,6 @@ async function game() {
     let result = rockPaperScissorsRound(playerSelection, computerSelection);
 
     if (result === userChooseNothing) {
-      result = userChooseNothing;
       computersScore += 1;
       document.querySelector(".computer-score").textContent = computersScore;
     } 
